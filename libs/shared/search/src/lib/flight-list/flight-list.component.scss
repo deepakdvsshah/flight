@@ -1,0 +1,29 @@
+.summary-locations-icon {
+  padding-left: 12px;
+  margin-left: 10px;
+  margin-right: 10px;
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.one-way-locations-icon {
+  padding-left: 12px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+section div:nth-child(1),
+section div:nth-child(3) {
+  color: rgb(255, 0, 43);
+  font-size: 30px;
+}
+
+section div:nth-child(1) {
+  margin-top: 20px;
+}
+
+section div:nth-child(2) {
+  width: 50%;
+}

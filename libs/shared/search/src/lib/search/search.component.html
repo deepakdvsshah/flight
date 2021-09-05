@@ -1,0 +1,93 @@
+<form [formGroup]="searchForm" autocomplete="off" novalidate (ngSubmit)="handleSearch(searchForm.value)">
+  <div>
+    <div fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign="center">
+
+      <div fxFlex.gt-sm="40%">
+        <div fxLayout="column">
+          <mat-checkbox [formControl]="oneWay">One Way</mat-checkbox>
+          <mat-form-field class="flight-search-code">
+            <input matInput placeholder="Departure airport code" [formControl]="departureAirportCode">
+            <mat-error *ngIf="departureAirportCode.hasError('required')">
+              Departure airport code is required.
+            </mat-error>
+            <mat-error *ngIf="departureAirportCode.hasError('minlength')">
+              Departure airport code must be 3 characters.
+            </mat-error>
+            <mat-error *ngIf="departureAirportCode.hasError('maxlength')">
+              Departure airport code must be 3 characters.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="flight-search-date">
+            <input matInput [matDatepicker]="departureDatePicker" [formControl]="departureDate"
+              placeholder="Departure date" [min]="defaultMinDate">
+            <mat-datepicker-toggle matSuffix [for]="departureDatePicker"></mat-datepicker-toggle>
+            <mat-error *ngIf="departureDate.hasError('required')">
+              Departure date is required.
+            </mat-error>
+            <mat-error *ngIf="departureDate.hasError('matDatepickerMin')">
+              Departure date cannot be a past date.
+            </mat-error>
+          </mat-form-field>
+          <mat-datepicker #departureDatePicker></mat-datepicker>
+          <div class="flight-search-date">
+            Max Price
+            <mat-slider thumbLabel (change)="updatePrice($event)" step="50" min="100" max="2000" [value]="maxPrice">
+            </mat-slider>
+          </div>
+        </div>
+      </div>
+      <div fxFlex.gt-sm="40%">
+        <div fxLayout="column">
+          <mat-checkbox [formControl]="nonStop">Non Stop</mat-checkbox>
+          <mat-form-field [ngClass]="{'bg-color':oneWay.value}" class="flight-search-code">
+            <input [attr.disabled]="oneWay.value == true ? true : null" matInput [formControl]="returnAirportCode"
+              placeholder="Return airport code">
+            <mat-error *ngIf="returnAirportCode.hasError('required')">
+              Return airport code is required.
+            </mat-error>
+            <mat-error *ngIf="returnAirportCode.hasError('minlength')">
+              Return airport code must be 3 characters.
+            </mat-error>
+            <mat-error *ngIf="returnAirportCode.hasError('maxlength')">
+              Return airport code must be 3 characters.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field [ngClass]="{'bg-color':oneWay.value}" class="flight-search-date">
+            <input [disabled]="oneWay.value" matInput [matDatepicker]="returnDatePicker" [formControl]="returnDate"
+              placeholder="Return date" [min]="departureDate.value || defaultMinDate">
+            <mat-datepicker-toggle matSuffix [for]="returnDatePicker"></mat-datepicker-toggle>
+            <mat-error *ngIf="returnDate.hasError('required')">
+              Return date is required.
+            </mat-error>
+            <mat-error *ngIf="returnDate.hasError('matDatepickerMin')">
+              <span *ngIf="departureDate.value">Return date cannot be before departure date.</span>
+              <span *ngIf="!departureDate.value">Return date cannot be a past date.</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>View By</mat-label>
+            <mat-select [(value)]="selectedItem">
+              <mat-option *ngFor="let view of views" [value]="view">{{view}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-datepicker #returnDatePicker></mat-datepicker>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign="center" *ngIf="showClose">
+      <div fxFlex.xs="1" fxFlex.gt-xs="10%" class="flight-search-button">
+        <button type="submit" mat-raised-button color="primary" fxFlex.xs>Search</button>
+      </div>
+      <div fxFlex.xs="1" fxFlex.gt-xs="10%" class="flight-search-button">
+        <button type="button" mat-raised-button (click)="handleClose()" fxFlex.xs>Close</button>
+      </div>
+    </div>
+    <div fxLayout.xs="column" fxLayout.gt-xs="row" fxLayoutAlign="center" *ngIf="!showClose">
+      <div fxFlex.xs="1" fxFlex.gt-xs="10%" class="flight-search-button">
+        <button type="submit" mat-raised-button color="primary" fxFlex.xs>Search</button>
+      </div>
+    </div>
+  </div>
+</form>
